@@ -87,11 +87,13 @@ public final class ImageData implements Serializable {
                 return BufferedImage.TYPE_BYTE_BINARY;
             case 8:
                 return BufferedImage.TYPE_BYTE_GRAY;
+            case 24:
+                return BufferedImage.TYPE_3BYTE_BGR;
             case 32:
                 return BufferedImage.TYPE_4BYTE_ABGR;
             default:
                 throw new IllegalArgumentException(
-                        format("Unsupported image type with bits per pixel [%d]. Expected {1, 8, 32}.", bitsPerPixel));
+                        format("Unsupported image type with bits per pixel [%d]. Expected {1, 8, 24, 32}.", bitsPerPixel));
         }
     }
 
