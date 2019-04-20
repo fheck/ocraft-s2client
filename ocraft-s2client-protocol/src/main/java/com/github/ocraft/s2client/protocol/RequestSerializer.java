@@ -40,7 +40,6 @@ public class RequestSerializer implements Function<Request, byte[]> {
     public byte[] apply(Request request) {
         if (!isSet(request)) return new byte[0];
         Sc2Api.Request sc2ApiRequest = request.toSc2Api();
-        sc2ApiRequest = sc2ApiRequest.toBuilder().setId(request.getId()).build();
 
         ByteArrayOutputStream output = new ByteArrayOutputStream(sc2ApiRequest.getSerializedSize());
         try {

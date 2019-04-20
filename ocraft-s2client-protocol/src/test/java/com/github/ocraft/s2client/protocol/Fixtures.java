@@ -370,9 +370,7 @@ public final class Fixtures {
     public static Sc2Api.Response sc2ApiResponseWithRestartGame() {
         return aSc2ApiResponse()
                 .setStatus(Sc2Api.Status.in_game)
-                .setRestartGame(Sc2Api.ResponseRestartGame.newBuilder()
-                        .setNeedHardReset(true)
-                        .build())
+                .setRestartGame(Sc2Api.ResponseRestartGame.newBuilder().build())
                 .build();
     }
 
@@ -452,9 +450,7 @@ public final class Fixtures {
     public static Sc2Api.Response sc2ApiResponseWithStep() {
         return aSc2ApiResponse()
                 .setStatus(Sc2Api.Status.in_game)
-                .setStep(Sc2Api.ResponseStep.newBuilder()
-                        .setSimulationLoop(SIMULATION_LOOP)
-                        .build())
+                .setStep(Sc2Api.ResponseStep.newBuilder().build())
                 .build();
     }
 
@@ -659,13 +655,6 @@ public final class Fixtures {
                 .setIdealHarvesters(UNIT_IDEAL_HARVESTERS)
                 .setWeaponCooldown(UNIT_WEAPON_COOLDOWN)
                 .setEngagedTargetTag(UNIT_ENGAGED_TARGET_TAG)
-                .setIsActive(UNIT_IS_ACTIVE)
-                .setAttackUpgradeLevel(UNIT_ATTACK_LEVEL)
-                .setArmorUpgradeLevel(UNIT_ARMOR_LEVEL)
-                .setShieldUpgradeLevel(UNIT_SHIELD_LEVEL)
-                .setIsHallucination(UNIT_IS_HALLUCINATION)
-                .setBuffDurationRemain(UNIT_BUFF_REMAIN)
-                .setBuffDurationMax(UNIT_BUFF_MAX)
                 .build();
     }
 
@@ -741,9 +730,6 @@ public final class Fixtures {
         return Raw.Effect.newBuilder()
                 .setEffectId(EFFECT_ID)
                 .addPos(sc2ApiPoint2d())
-                .setAlliance(Raw.Alliance.Self)
-                .setOwner(PLAYER_ID)
-                .setRadius(RADIUS)
                 .build();
     }
 
@@ -773,15 +759,6 @@ public final class Fixtures {
                 .setUnitDensityAa(sc2ApiImageData())
                 .setUnitDensity(sc2ApiImageData())
                 .setEffects(sc2ApiImageData())
-                .setHallucinations(sc2ApiImageData())
-                .setCloaked(sc2ApiImageData())
-                .setBlip(sc2ApiImageData())
-                .setBuffs(sc2ApiImageData())
-                .setBuffDuration(sc2ApiImageData())
-                .setActive(sc2ApiImageData())
-                .setBuildProgress(sc2ApiImageData())
-                .setBuildable(sc2ApiImageData())
-                .setPathable(sc2ApiImageData())
                 .build();
     }
 
@@ -795,9 +772,6 @@ public final class Fixtures {
                 .setUnitType(sc2ApiImageData())
                 .setSelected(sc2ApiImageData())
                 .setPlayerRelative(sc2ApiImageData())
-                .setAlerts(sc2ApiImageData())
-                .setBuildable(sc2ApiImageData())
-                .setPathable(sc2ApiImageData())
                 .build();
     }
 
@@ -823,9 +797,6 @@ public final class Fixtures {
                 .setTransportSlotsTaken(CARGO_SIZE)
                 .setBuildProgress(UNIT_BUILD_PROGRESS)
                 .setAddOn(sc2ApiUnitInfoAddOn())
-                .setMaxHealth((int) UNIT_HEALTH)
-                .setMaxShields((int) UNIT_SHIELD)
-                .setMaxEnergy((int) UNIT_ENERGY)
                 .build();
     }
 
@@ -1123,7 +1094,6 @@ public final class Fixtures {
                 .setActionRender(sc2ApiActionSpatialWithCameraMove())
                 .setActionUi(sc2ApiActionUiWithControlGroup())
                 .setActionChat(sc2ApiActionWithChat())
-                .setGameLoop(GAME_LOOP)
                 .build();
     }
 

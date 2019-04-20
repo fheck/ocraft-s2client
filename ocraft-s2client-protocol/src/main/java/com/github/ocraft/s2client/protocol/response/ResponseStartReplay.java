@@ -30,6 +30,7 @@ import SC2APIProtocol.Sc2Api;
 import com.github.ocraft.s2client.protocol.Strings;
 import com.github.ocraft.s2client.protocol.game.GameStatus;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.github.ocraft.s2client.protocol.Constants.nothing;
@@ -78,8 +79,8 @@ public final class ResponseStartReplay extends Response {
     }
 
     private ResponseStartReplay(
-            Sc2Api.ResponseStartReplay sc2ApiResponseStartReplay, Sc2Api.Status sc2ApiStatus, int id) {
-        super(ResponseType.START_REPLAY, GameStatus.from(sc2ApiStatus), id);
+            Sc2Api.ResponseStartReplay sc2ApiResponseStartReplay, Sc2Api.Status sc2ApiStatus) {
+        super(ResponseType.START_REPLAY, GameStatus.from(sc2ApiStatus));
 
         this.error = tryGet(
                 Sc2Api.ResponseStartReplay::getError, Sc2Api.ResponseStartReplay::hasError
@@ -96,8 +97,7 @@ public final class ResponseStartReplay extends Response {
         }
         return new ResponseStartReplay(
                 sc2ApiResponse.getStartReplay(),
-                sc2ApiResponse.getStatus(),
-                sc2ApiResponse.getId());
+                sc2ApiResponse.getStatus());
     }
 
     private static boolean hasStartReplayResponse(Sc2Api.Response sc2ApiResponse) {
@@ -122,7 +122,7 @@ public final class ResponseStartReplay extends Response {
 
         return that.canEqual(this) &&
                 error == that.error &&
-                (errorDetails != null ? errorDetails.equals(that.errorDetails) : that.errorDetails == null);
+                (Objects.equals(errorDetails, that.errorDetails));
     }
 
     @Override

@@ -41,7 +41,6 @@ class RequestObservationTest {
 
         assertThat(sc2ApiRequest.hasObservation()).as("sc2api request has observation").isTrue();
         assertThat(sc2ApiRequest.getObservation().getDisableFog()).as("request observation: disable fog").isTrue();
-        assertThat(sc2ApiRequest.getObservation().getGameLoop()).as("request observation: game loop").isEqualTo(2);
     }
 
     @Test

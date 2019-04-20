@@ -52,8 +52,6 @@ public final class SpatialCameraSetup implements Sc2ApiSerializable<Sc2Api.Spati
     private final Float width;
     private final Size2dI map;
     private final Size2dI minimap;
-    private final Boolean cropToPlayableArea;
-    private final Boolean allowCheatingLayers;
 
     public static final class Builder implements SpatialCameraSetupSyntax, ResolutionSyntax, MinimapResolutionSyntax,
             MinimapSpatialSetupSyntax, BuilderSyntax<SpatialCameraSetup> {
@@ -125,8 +123,6 @@ public final class SpatialCameraSetup implements Sc2ApiSerializable<Sc2Api.Spati
         this.width = builder.width;
         this.map = builder.map;
         this.minimap = builder.minimap;
-        this.cropToPlayableArea = builder.cropToPlayableArea;
-        this.allowCheatingLayers = builder.allowCheatingLayers;
     }
 
     private SpatialCameraSetup(Sc2Api.SpatialCameraSetup sc2ApiSpatialCameraSetup) {
@@ -139,14 +135,6 @@ public final class SpatialCameraSetup implements Sc2ApiSerializable<Sc2Api.Spati
         minimap = tryGet(
                 Sc2Api.SpatialCameraSetup::getMinimapResolution, Sc2Api.SpatialCameraSetup::hasMinimapResolution
         ).apply(sc2ApiSpatialCameraSetup).map(Size2dI::from).orElseThrow(required("minimap resolution"));
-
-        cropToPlayableArea = tryGet(
-                Sc2Api.SpatialCameraSetup::getCropToPlayableArea, Sc2Api.SpatialCameraSetup::hasCropToPlayableArea
-        ).apply(sc2ApiSpatialCameraSetup).orElse(nothing());
-
-        allowCheatingLayers = tryGet(
-                Sc2Api.SpatialCameraSetup::getAllowCheatingLayers, Sc2Api.SpatialCameraSetup::hasAllowCheatingLayers
-        ).apply(sc2ApiSpatialCameraSetup).orElse(nothing());
     }
 
     public static SpatialCameraSetup from(Sc2Api.SpatialCameraSetup sc2ApiSpatialCameraSetup) {
@@ -161,8 +149,6 @@ public final class SpatialCameraSetup implements Sc2ApiSerializable<Sc2Api.Spati
                 .setMinimapResolution(minimap.toSc2Api());
 
         getWidth().ifPresent(aCameraSetup::setWidth);
-        getCropToPlayableArea().ifPresent(aCameraSetup::setCropToPlayableArea);
-        getAllowCheatingLayers().ifPresent(aCameraSetup::setAllowCheatingLayers);
 
         return aCameraSetup.build();
     }
@@ -179,14 +165,6 @@ public final class SpatialCameraSetup implements Sc2ApiSerializable<Sc2Api.Spati
         return minimap;
     }
 
-    public Optional<Boolean> getCropToPlayableArea() {
-        return Optional.ofNullable(cropToPlayableArea);
-    }
-
-    public Optional<Boolean> getAllowCheatingLayers() {
-        return Optional.ofNullable(allowCheatingLayers);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -196,10 +174,7 @@ public final class SpatialCameraSetup implements Sc2ApiSerializable<Sc2Api.Spati
 
         if (!Objects.equals(width, that.width)) return false;
         if (!map.equals(that.map)) return false;
-        if (!minimap.equals(that.minimap)) return false;
-        if (!Objects.equals(cropToPlayableArea, that.cropToPlayableArea))
-            return false;
-        return Objects.equals(allowCheatingLayers, that.allowCheatingLayers);
+        return minimap.equals(that.minimap);
     }
 
     @Override
@@ -207,8 +182,6 @@ public final class SpatialCameraSetup implements Sc2ApiSerializable<Sc2Api.Spati
         int result = width != null ? width.hashCode() : 0;
         result = 31 * result + map.hashCode();
         result = 31 * result + minimap.hashCode();
-        result = 31 * result + (cropToPlayableArea != null ? cropToPlayableArea.hashCode() : 0);
-        result = 31 * result + (allowCheatingLayers != null ? allowCheatingLayers.hashCode() : 0);
         return result;
     }
 

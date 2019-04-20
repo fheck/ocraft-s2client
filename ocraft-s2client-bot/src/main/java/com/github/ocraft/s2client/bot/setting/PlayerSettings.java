@@ -40,35 +40,32 @@ public final class PlayerSettings {
     private final Difficulty difficulty;
     private final S2Agent agent;
     private final String playerName;
-    private final AiBuild aiBuild;
 
     private PlayerSettings(
-            PlayerSetup playerSetup, Race race, Difficulty difficulty, S2Agent agent, String playerName,
-            AiBuild aiBuild) {
+            PlayerSetup playerSetup, Race race, Difficulty difficulty, S2Agent agent, String playerName) {
         this.playerSetup = playerSetup;
         this.race = race;
         this.difficulty = difficulty;
         this.agent = agent;
         this.playerName = playerName;
-        this.aiBuild = aiBuild;
     }
 
     public static PlayerSettings participant(Race race, S2Agent agent) {
         require("race", race);
         require("agent", agent);
-        return new PlayerSettings(PlayerSetup.participant(), race, null, agent, null, null);
+        return new PlayerSettings(PlayerSetup.participant(), race, null, agent, null);
     }
 
     public static PlayerSettings computer(Race race, Difficulty difficulty) {
         require("race", race);
         require("difficulty", difficulty);
-        return new PlayerSettings(ComputerPlayerSetup.computer(race, difficulty), race, difficulty, null, null, null);
+        return new PlayerSettings(ComputerPlayerSetup.computer(race, difficulty), race, difficulty, null, null);
     }
 
     public static PlayerSettings participant(Race race, S2Agent agent, String playerName) {
         require("race", race);
         require("agent", agent);
-        return new PlayerSettings(PlayerSetup.participant(), race, null, agent, playerName, null);
+        return new PlayerSettings(PlayerSetup.participant(), race, null, agent, playerName);
     }
 
     public static PlayerSettings computer(Race race, Difficulty difficulty, String playerName) {
@@ -79,32 +76,7 @@ public final class PlayerSettings {
                 race,
                 difficulty,
                 null,
-                playerName,
-                null);
-    }
-
-    public static PlayerSettings computer(Race race, Difficulty difficulty, String playerName, AiBuild aiBuild) {
-        require("race", race);
-        require("difficulty", difficulty);
-        return new PlayerSettings(
-                ComputerPlayerSetup.computer(race, difficulty, playerName, aiBuild),
-                race,
-                difficulty,
-                null,
-                playerName,
-                aiBuild);
-    }
-
-    public static PlayerSettings computer(Race race, Difficulty difficulty, AiBuild aiBuild) {
-        require("race", race);
-        require("difficulty", difficulty);
-        return new PlayerSettings(
-                ComputerPlayerSetup.computer(race, difficulty, null, aiBuild),
-                race,
-                difficulty,
-                null,
-                null,
-                aiBuild);
+                playerName);
     }
 
     public PlayerSetup getPlayerSetup() {
@@ -127,10 +99,6 @@ public final class PlayerSettings {
         return playerName;
     }
 
-    public AiBuild getAiBuild() {
-        return aiBuild;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -142,8 +110,7 @@ public final class PlayerSettings {
         if (race != that.race) return false;
         if (difficulty != that.difficulty) return false;
         if (!Objects.equals(agent, that.agent)) return false;
-        if (!Objects.equals(playerName, that.playerName)) return false;
-        return aiBuild == that.aiBuild;
+        return Objects.equals(playerName, that.playerName);
     }
 
     @Override
@@ -153,7 +120,6 @@ public final class PlayerSettings {
         result = 31 * result + difficulty.hashCode();
         result = 31 * result + (agent != null ? agent.hashCode() : 0);
         result = 31 * result + (playerName != null ? playerName.hashCode() : 0);
-        result = 31 * result + (aiBuild != null ? aiBuild.hashCode() : 0);
         return result;
     }
 
@@ -165,7 +131,6 @@ public final class PlayerSettings {
                 ", difficulty=" + difficulty +
                 ", agent=" + agent +
                 ", playerName='" + playerName + '\'' +
-                ", aiBuild=" + aiBuild +
                 '}';
     }
 }

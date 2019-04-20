@@ -501,7 +501,7 @@ class ControlInterfaceImplIT {
         when(observation.getPlayerCommon()).thenReturn(playerCommon);
         when(observation.getScore()).thenReturn(Optional.of(mock(Score.class)));
         when(observation.getAlerts())
-                .thenReturn(Set.of(Alert.NUCLEAR_LAUNCH_DETECTED, Alert.NYDUS_WORM_DETECTED, Alert.BUILDING_COMPLETE));
+                .thenReturn(Set.of(Alert.NUCLEAR_LAUNCH_DETECTED, Alert.NYDUS_WORM_DETECTED));
 
         Action action = mock(Action.class);
         when(action.getRaw()).thenReturn(Optional.of(mock(ActionRaw.class)));
@@ -565,7 +565,6 @@ class ControlInterfaceImplIT {
         verify(clientEvents).onNuclearLaunchDetected();
         verify(clientEvents).onNydusDetected();
         verify(clientEvents).onStep();
-        verify(clientEvents).onAlert(Alert.BUILDING_COMPLETE);
 
         verifyNoMoreInteractions(clientEvents);
     }

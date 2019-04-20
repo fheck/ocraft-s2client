@@ -1033,14 +1033,6 @@ public class S2Coordinator {
         return PlayerSettings.computer(race, difficulty, playerName);
     }
 
-    public static PlayerSettings createComputer(Race race, Difficulty difficulty, AiBuild aiBuild) {
-        return PlayerSettings.computer(race, difficulty, aiBuild);
-    }
-
-    public static PlayerSettings createComputer(Race race, Difficulty difficulty, String playerName, AiBuild aiBuild) {
-        return PlayerSettings.computer(race, difficulty, playerName, aiBuild);
-    }
-
     List<S2Agent> getAgents() {
         return new ArrayList<>(agents);
     }

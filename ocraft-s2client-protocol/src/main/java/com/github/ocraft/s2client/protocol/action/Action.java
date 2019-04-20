@@ -64,7 +64,6 @@ public final class Action implements Sc2ApiSerializable<Sc2Api.Action> {
     private final ActionSpatial render;
     private final ActionUi ui;
     private final ActionChat chat;
-    private final Integer gameLoop;
 
     public static final class Builder implements ActionBuilder, ActionSyntax {
         private ActionRaw raw;
@@ -330,7 +329,6 @@ public final class Action implements Sc2ApiSerializable<Sc2Api.Action> {
         render = builder.render;
         ui = builder.ui;
         chat = builder.chat;
-        gameLoop = null;
         validateActionCase();
     }
 
@@ -360,10 +358,6 @@ public final class Action implements Sc2ApiSerializable<Sc2Api.Action> {
         this.chat = tryGet(
                 Sc2Api.Action::getActionChat, Sc2Api.Action::hasActionChat
         ).apply(sc2ApiAction).map(ActionChat::from).orElse(nothing());
-
-        this.gameLoop = tryGet(
-                Sc2Api.Action::getGameLoop, Sc2Api.Action::hasGameLoop
-        ).apply(sc2ApiAction).orElse(nothing());
 
         validateActionCase();
     }
@@ -414,13 +408,6 @@ public final class Action implements Sc2ApiSerializable<Sc2Api.Action> {
         return Optional.ofNullable(chat);
     }
 
-    /**
-     * Populated for actions in ResponseObservation. The game loop on which the action was executed.
-     */
-    public Optional<Integer> getGameLoop() {
-        return Optional.ofNullable(gameLoop);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -433,9 +420,7 @@ public final class Action implements Sc2ApiSerializable<Sc2Api.Action> {
             return false;
         if (!Objects.equals(render, action.render)) return false;
         if (!Objects.equals(ui, action.ui)) return false;
-        if (!Objects.equals(chat, action.chat)) return false;
-        return Objects.equals(gameLoop, action.gameLoop);
-
+        return !Objects.equals(chat, action.chat);
     }
 
     @Override
@@ -445,7 +430,6 @@ public final class Action implements Sc2ApiSerializable<Sc2Api.Action> {
         result = 31 * result + (render != null ? render.hashCode() : 0);
         result = 31 * result + (ui != null ? ui.hashCode() : 0);
         result = 31 * result + (chat != null ? chat.hashCode() : 0);
-        result = 31 * result + (gameLoop != null ? gameLoop.hashCode() : 0);
         return result;
     }
 

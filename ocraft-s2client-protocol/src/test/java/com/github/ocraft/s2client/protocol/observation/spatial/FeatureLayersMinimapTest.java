@@ -58,14 +58,8 @@ class FeatureLayersMinimapTest {
         assertThat(featureLayersMinimap.getCreep()).as("feature layers minimap: creep").isNotNull();
         assertThat(featureLayersMinimap.getCamera()).as("feature layers minimap: camera").isNotNull();
         assertThat(featureLayersMinimap.getPlayerId()).as("feature layers minimap: player id").isNotNull();
-        assertThat(featureLayersMinimap.getUnitType()).as("feature layers minimap: unit type").isNotEmpty();
         assertThat(featureLayersMinimap.getSelected()).as("feature layers minimap: selected").isNotNull();
         assertThat(featureLayersMinimap.getPlayerRelative()).as("feature layers minimap: player relative").isNotNull();
-
-        assertThat(featureLayersMinimap.getAlerts()).as("feature layers minimap: alerts").isNotEmpty();
-        assertThat(featureLayersMinimap.getBuildable()).as("feature layers minimap: buildable").isNotEmpty();
-        assertThat(featureLayersMinimap.getPathable()).as("feature layers minimap: pathable").isNotEmpty();
-
     }
 
     @Test

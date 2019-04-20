@@ -55,7 +55,6 @@ class ResponseStepTest {
         assertThat(responseStep.getType()).as("type of step response")
                 .isEqualTo(ResponseType.STEP);
         assertThat(responseStep.getStatus()).as("status of step response").isEqualTo(GameStatus.IN_GAME);
-        assertThat(responseStep.getSimulationLoop()).as("simulation loop").hasValue(SIMULATION_LOOP);
     }
 
     @Test

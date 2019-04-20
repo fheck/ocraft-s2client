@@ -81,8 +81,8 @@ public final class ResponseCreateGame extends Response {
         }
     }
 
-    private ResponseCreateGame(Sc2Api.ResponseCreateGame sc2ApiResponseCreateGame, Sc2Api.Status status, int id) {
-        super(ResponseType.CREATE_GAME, GameStatus.from(status), id);
+    private ResponseCreateGame(Sc2Api.ResponseCreateGame sc2ApiResponseCreateGame, Sc2Api.Status status) {
+        super(ResponseType.CREATE_GAME, GameStatus.from(status));
 
         this.error = tryGet(
                 Sc2Api.ResponseCreateGame::getError, Sc2Api.ResponseCreateGame::hasError
@@ -99,8 +99,7 @@ public final class ResponseCreateGame extends Response {
         }
         return new ResponseCreateGame(
                 sc2ApiResponse.getCreateGame(),
-                sc2ApiResponse.getStatus(),
-                sc2ApiResponse.getId());
+                sc2ApiResponse.getStatus());
     }
 
     private static boolean hasCreateGameResponse(Sc2Api.Response sc2ApiResponse) {

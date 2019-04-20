@@ -44,10 +44,7 @@ class InterfaceOptionsTest {
     void serializesToSc2ApiInterfaceOptions() {
         assertThatAllFieldsAreSerialized(
                 interfaces()
-                        .showCloaked(true)
                         .raw()
-                        .rawAffectsSelection(true)
-                        .rawCropToPlayableArea(true)
                         .score()
                         .featureLayer(defaultSpatialSetup())
                         .render(defaultSpatialSetupForRender())
@@ -59,9 +56,6 @@ class InterfaceOptionsTest {
         assertThat(sc2ApiInterfaceOptions.getScore()).as("score option is set").isTrue();
         assertThat(sc2ApiInterfaceOptions.hasFeatureLayer()).as("feature layer is set").isTrue();
         assertThat(sc2ApiInterfaceOptions.hasRender()).as("render is set").isTrue();
-        assertThat(sc2ApiInterfaceOptions.getShowCloaked()).as("show cloaked option is set").isTrue();
-        assertThat(sc2ApiInterfaceOptions.getRawAffectsSelection()).as("raw affects selection option is set").isTrue();
-        assertThat(sc2ApiInterfaceOptions.getRawCropToPlayableArea()).as("raw crop area option is set").isTrue();
     }
 
 
@@ -69,10 +63,7 @@ class InterfaceOptionsTest {
     void serializesToSc2ApiInterfaceOptionsUsingBuilders() {
         assertThatAllFieldsAreSerialized(
                 interfaces()
-                        .showCloaked(true)
                         .raw()
-                        .rawAffectsSelection(true)
-                        .rawCropToPlayableArea(true)
                         .score()
                         .featureLayer(aSpatialSetup())
                         .render(aSpatialSetup())

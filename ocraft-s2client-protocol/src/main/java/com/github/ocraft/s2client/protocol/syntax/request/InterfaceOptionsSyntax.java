@@ -30,8 +30,8 @@ import com.github.ocraft.s2client.protocol.BuilderSyntax;
 import com.github.ocraft.s2client.protocol.game.InterfaceOptions;
 import com.github.ocraft.s2client.protocol.spatial.SpatialCameraSetup;
 
-public interface InterfaceOptionsSyntax extends InterfaceSettingsSyntax {
-    RawSyntax raw();
+public interface InterfaceOptionsSyntax {
+    ScoreSyntax raw();
 
     FeatureLayerSyntax score();
 

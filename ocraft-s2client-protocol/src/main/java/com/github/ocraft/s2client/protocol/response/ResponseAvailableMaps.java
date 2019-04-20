@@ -49,8 +49,8 @@ public final class ResponseAvailableMaps extends Response {
     private final Set<LocalMap> localMaps;
 
     private ResponseAvailableMaps(
-            Sc2Api.ResponseAvailableMaps sc2ApiResponseAvailableMaps, Sc2Api.Status sc2ApiStatus, int id) {
-        super(ResponseType.AVAILABLE_MAPS, GameStatus.from(sc2ApiStatus), id);
+            Sc2Api.ResponseAvailableMaps sc2ApiResponseAvailableMaps, Sc2Api.Status sc2ApiStatus) {
+        super(ResponseType.AVAILABLE_MAPS, GameStatus.from(sc2ApiStatus));
 
         this.battlenetMaps = new HashSet<>(sc2ApiResponseAvailableMaps.getBattlenetMapNamesList())
                 .stream()
@@ -70,8 +70,7 @@ public final class ResponseAvailableMaps extends Response {
         }
         return new ResponseAvailableMaps(
                 sc2ApiResponse.getAvailableMaps(),
-                sc2ApiResponse.getStatus(),
-                sc2ApiResponse.getId());
+                sc2ApiResponse.getStatus());
     }
 
     private static boolean hasAvailableMapsResponse(Sc2Api.Response sc2ApiResponse) {

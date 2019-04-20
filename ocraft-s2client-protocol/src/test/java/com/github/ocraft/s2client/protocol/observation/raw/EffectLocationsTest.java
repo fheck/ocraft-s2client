@@ -52,10 +52,6 @@ class EffectLocationsTest {
     private void assertThatAllFieldsAreConverted(EffectLocations effect) {
         assertThat(effect.getEffect()).as("effect: effect").isNotNull();
         assertThat(effect.getPositions()).as("effect: positions").isNotEmpty();
-
-        assertThat(effect.getAlliance()).as("effect: alliance").hasValue(Alliance.SELF);
-        assertThat(effect.getOwner()).as("effect: owner").hasValue(PLAYER_ID);
-        assertThat(effect.getRadius()).as("effect: radius").hasValue(RADIUS);
     }
 
     @Test

@@ -41,14 +41,12 @@ public abstract class Response implements Serializable {
 
     private final ResponseType type;
     private final GameStatus status;
-    private final int id;
     private final long nanoTime = System.nanoTime();
 
-    Response(ResponseType type, GameStatus status, int id) {
+    Response(ResponseType type, GameStatus status) {
         requireNonNull(type, "response type must not be null");
         this.type = type;
         this.status = status != null ? status : GameStatus.UNKNOWN;
-        this.id = id;
     }
 
     public ResponseType getType() {
@@ -61,10 +59,6 @@ public abstract class Response implements Serializable {
 
     public long getNanoTime() {
         return nanoTime;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public <T extends Response> Optional<T> as(Class<T> clazz) {
@@ -100,7 +94,6 @@ public abstract class Response implements Serializable {
 
         if (!response.canEqual(this)) return false;
 
-        if (id != response.id) return false;
         if (type != response.type) return false;
         return status == response.status;
     }
@@ -113,7 +106,6 @@ public abstract class Response implements Serializable {
     public int hashCode() {
         int result = type.hashCode();
         result = 31 * result + status.hashCode();
-        result = 31 * result + id;
         return result;
     }
 

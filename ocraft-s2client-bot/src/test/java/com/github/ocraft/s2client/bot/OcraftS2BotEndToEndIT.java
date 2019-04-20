@@ -28,7 +28,6 @@ package com.github.ocraft.s2client.bot;
 
 import com.github.ocraft.s2client.bot.sequence.*;
 import com.github.ocraft.s2client.bot.setting.GameSettings;
-import com.github.ocraft.s2client.protocol.game.AiBuild;
 import com.github.ocraft.s2client.protocol.game.Difficulty;
 import com.github.ocraft.s2client.protocol.game.Race;
 import org.junit.jupiter.api.Tag;
@@ -93,7 +92,7 @@ class OcraftS2BotEndToEndIT {
                 .loadSettings(new String[]{"-m", "Lava Flow"})
                 .setParticipants(
                         S2Coordinator.createParticipant(Race.PROTOSS, bot, "Adam"),
-                        S2Coordinator.createComputer(Race.ZERG, Difficulty.MEDIUM, "Eve", AiBuild.RUSH))
+                        S2Coordinator.createComputer(Race.ZERG, Difficulty.MEDIUM, "Eve"))
                 .launchStarcraft()
                 .startGame();
 

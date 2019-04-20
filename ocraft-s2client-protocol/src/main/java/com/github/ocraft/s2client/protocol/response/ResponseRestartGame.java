@@ -47,7 +47,6 @@ public final class ResponseRestartGame extends Response {
 
     private final Error error;
     private final String errorDetails;
-    private final Boolean needHardReset;
 
     public enum Error {
         LAUNCH_ERROR;
@@ -64,8 +63,8 @@ public final class ResponseRestartGame extends Response {
     }
 
     private ResponseRestartGame(
-            Sc2Api.ResponseRestartGame sc2ApiResponseRestartGame, Sc2Api.Status sc2ApiStatus, int id) {
-        super(ResponseType.RESTART_GAME, GameStatus.from(sc2ApiStatus), id);
+            Sc2Api.ResponseRestartGame sc2ApiResponseRestartGame, Sc2Api.Status sc2ApiStatus) {
+        super(ResponseType.RESTART_GAME, GameStatus.from(sc2ApiStatus));
 
         this.error = tryGet(
                 Sc2Api.ResponseRestartGame::getError, Sc2Api.ResponseRestartGame::hasError
@@ -74,10 +73,6 @@ public final class ResponseRestartGame extends Response {
         this.errorDetails = tryGet(
                 Sc2Api.ResponseRestartGame::getErrorDetails, Sc2Api.ResponseRestartGame::hasErrorDetails
         ).apply(sc2ApiResponseRestartGame).orElse(nothing());
-
-        this.needHardReset = tryGet(
-                Sc2Api.ResponseRestartGame::getNeedHardReset, Sc2Api.ResponseRestartGame::hasNeedHardReset
-        ).apply(sc2ApiResponseRestartGame).orElse(nothing());
     }
 
     public static ResponseRestartGame from(Sc2Api.Response sc2ApiResponse) {
@@ -85,7 +80,7 @@ public final class ResponseRestartGame extends Response {
             throw new IllegalArgumentException("provided argument doesn't have restart game response");
         }
         return new ResponseRestartGame(
-                sc2ApiResponse.getRestartGame(), sc2ApiResponse.getStatus(), sc2ApiResponse.getId());
+                sc2ApiResponse.getRestartGame(), sc2ApiResponse.getStatus());
     }
 
     private static boolean hasRestartGameResponse(Sc2Api.Response sc2ApiResponse) {
@@ -100,13 +95,6 @@ public final class ResponseRestartGame extends Response {
         return Optional.ofNullable(errorDetails);
     }
 
-    /**
-     * This will occur once the simulation_loop is greater then defaultRestartGameLoops.
-     */
-    public Optional<Boolean> getNeedHardReset() {
-        return Optional.ofNullable(needHardReset);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -117,8 +105,7 @@ public final class ResponseRestartGame extends Response {
 
         if (!that.canEqual(this)) return false;
         if (error != that.error) return false;
-        if (!Objects.equals(errorDetails, that.errorDetails)) return false;
-        return Objects.equals(needHardReset, that.needHardReset);
+        return Objects.equals(errorDetails, that.errorDetails);
     }
 
     @Override
@@ -131,7 +118,6 @@ public final class ResponseRestartGame extends Response {
         int result = super.hashCode();
         result = 31 * result + (error != null ? error.hashCode() : 0);
         result = 31 * result + (errorDetails != null ? errorDetails.hashCode() : 0);
-        result = 31 * result + (needHardReset != null ? needHardReset.hashCode() : 0);
         return result;
     }
 

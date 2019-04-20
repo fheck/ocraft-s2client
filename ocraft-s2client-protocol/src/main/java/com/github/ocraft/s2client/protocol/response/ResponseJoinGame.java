@@ -30,6 +30,7 @@ import SC2APIProtocol.Sc2Api;
 import com.github.ocraft.s2client.protocol.Strings;
 import com.github.ocraft.s2client.protocol.game.GameStatus;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.github.ocraft.s2client.protocol.Constants.nothing;
@@ -95,8 +96,8 @@ public final class ResponseJoinGame extends Response {
         }
     }
 
-    private ResponseJoinGame(Sc2Api.ResponseJoinGame sc2ApiResponseJoinGame, Sc2Api.Status sc2ApiStatus, int id) {
-        super(ResponseType.JOIN_GAME, GameStatus.from(sc2ApiStatus), id);
+    private ResponseJoinGame(Sc2Api.ResponseJoinGame sc2ApiResponseJoinGame, Sc2Api.Status sc2ApiStatus) {
+        super(ResponseType.JOIN_GAME, GameStatus.from(sc2ApiStatus));
 
         this.playerId = sc2ApiResponseJoinGame.getPlayerId();
 
@@ -114,7 +115,7 @@ public final class ResponseJoinGame extends Response {
             throw new IllegalArgumentException("provided argument doesn't have join game response");
         }
 
-        return new ResponseJoinGame(sc2ApiResponse.getJoinGame(), sc2ApiResponse.getStatus(), sc2ApiResponse.getId());
+        return new ResponseJoinGame(sc2ApiResponse.getJoinGame(), sc2ApiResponse.getStatus());
     }
 
     private static boolean hasJoinGameResponse(Sc2Api.Response sc2ApiResponse) {
@@ -144,7 +145,7 @@ public final class ResponseJoinGame extends Response {
         return that.canEqual(this) &&
                 playerId == that.playerId &&
                 error == that.error &&
-                (errorDetails != null ? errorDetails.equals(that.errorDetails) : that.errorDetails == null);
+                (Objects.equals(errorDetails, that.errorDetails));
     }
 
     @Override

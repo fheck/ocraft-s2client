@@ -79,8 +79,6 @@ public final class RequestObservation extends Request {
     public Sc2Api.Request toSc2Api() {
         Sc2Api.RequestObservation.Builder request = Sc2Api.RequestObservation.newBuilder().setDisableFog(disableFog);
 
-        Optional.ofNullable(gameLoop).ifPresent(request::setGameLoop);
-
         return Sc2Api.Request.newBuilder()
                 .setObservation(request.build())
                 .build();

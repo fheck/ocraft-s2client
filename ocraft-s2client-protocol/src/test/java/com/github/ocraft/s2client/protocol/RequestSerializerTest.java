@@ -48,7 +48,6 @@ class RequestSerializerTest {
         RequestPing ping = ping();
         Sc2Api.Request initialRequest = Sc2Api.Request.newBuilder()
                 .setPing(Sc2Api.RequestPing.newBuilder().build())
-                .setId(ping.getId())
                 .build();
 
         byte[] serializedRequest = new RequestSerializer().apply(ping);

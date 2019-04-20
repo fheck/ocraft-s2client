@@ -47,10 +47,6 @@ public enum CloakState {
                 return NOT_CLOAKED;
             case CloakedDetected:
                 return CLOAKED_DETECTED;
-            case CloakedUnknown:
-                return CLOAKED_UNKNOWN;
-            case CloakedAllied:
-                return CLOAKED_ALLIED;
             default:
                 throw new AssertionError("unknown sc2api cloak state: " + sc2ApiCloakState);
         }

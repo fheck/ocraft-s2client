@@ -53,11 +53,6 @@ public final class UnitInfo implements Serializable {
     private final Float buildProgress;    // Range: [0.0, 1.0]
     private final UnitInfo addOn;
 
-    // since 4.84
-    private final Integer maxHealth;
-    private final Integer maxShields;
-    private final Integer maxEnergy;
-
     private UnitInfo(Ui.UnitInfo sc2ApiUnitInfo) {
         unitType = tryGet(
                 Ui.UnitInfo::getUnitType, Ui.UnitInfo::hasUnitType
@@ -90,18 +85,6 @@ public final class UnitInfo implements Serializable {
         addOn = tryGet(
                 Ui.UnitInfo::getAddOn, Ui.UnitInfo::hasAddOn
         ).apply(sc2ApiUnitInfo).map(UnitInfo::from).orElse(nothing());
-
-        maxHealth = tryGet(
-                Ui.UnitInfo::getMaxHealth, Ui.UnitInfo::hasMaxHealth
-        ).apply(sc2ApiUnitInfo).orElse(nothing());
-
-        maxShields = tryGet(
-                Ui.UnitInfo::getMaxShields, Ui.UnitInfo::hasMaxShields
-        ).apply(sc2ApiUnitInfo).orElse(nothing());
-
-        maxEnergy = tryGet(
-                Ui.UnitInfo::getMaxEnergy, Ui.UnitInfo::hasMaxEnergy
-        ).apply(sc2ApiUnitInfo).orElse(nothing());
     }
 
     public static UnitInfo from(Ui.UnitInfo sc2ApiUnitInfo) {
@@ -141,18 +124,6 @@ public final class UnitInfo implements Serializable {
         return Optional.ofNullable(addOn);
     }
 
-    public Optional<Integer> getMaxHealth() {
-        return Optional.ofNullable(maxHealth);
-    }
-
-    public Optional<Integer> getMaxShields() {
-        return Optional.ofNullable(maxShields);
-    }
-
-    public Optional<Integer> getMaxEnergy() {
-        return Optional.ofNullable(maxEnergy);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -169,10 +140,7 @@ public final class UnitInfo implements Serializable {
             return false;
         if (!Objects.equals(buildProgress, unitInfo.buildProgress))
             return false;
-        if (!Objects.equals(addOn, unitInfo.addOn)) return false;
-        if (!Objects.equals(maxHealth, unitInfo.maxHealth)) return false;
-        if (!Objects.equals(maxShields, unitInfo.maxShields)) return false;
-        return Objects.equals(maxEnergy, unitInfo.maxEnergy);
+        return Objects.equals(addOn, unitInfo.addOn);
     }
 
     @Override
@@ -185,9 +153,6 @@ public final class UnitInfo implements Serializable {
         result = 31 * result + (transportSlotsTaken != null ? transportSlotsTaken.hashCode() : 0);
         result = 31 * result + (buildProgress != null ? buildProgress.hashCode() : 0);
         result = 31 * result + (addOn != null ? addOn.hashCode() : 0);
-        result = 31 * result + (maxHealth != null ? maxHealth.hashCode() : 0);
-        result = 31 * result + (maxShields != null ? maxShields.hashCode() : 0);
-        result = 31 * result + (maxEnergy != null ? maxEnergy.hashCode() : 0);
         return result;
     }
 

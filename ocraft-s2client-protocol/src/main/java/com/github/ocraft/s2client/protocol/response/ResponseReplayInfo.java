@@ -74,8 +74,8 @@ public final class ResponseReplayInfo extends Response {
     }
 
     private ResponseReplayInfo(
-            Sc2Api.ResponseReplayInfo sc2ApiResponseReplayInfo, Sc2Api.Status sc2ApiStatus, int id) {
-        super(ResponseType.REPLAY_INFO, GameStatus.from(sc2ApiStatus), id);
+            Sc2Api.ResponseReplayInfo sc2ApiResponseReplayInfo, Sc2Api.Status sc2ApiStatus) {
+        super(ResponseType.REPLAY_INFO, GameStatus.from(sc2ApiStatus));
 
         if (!sc2ApiResponseReplayInfo.hasError()) {
             this.replayInfo = ReplayInfo.from(sc2ApiResponseReplayInfo);
@@ -101,8 +101,7 @@ public final class ResponseReplayInfo extends Response {
         }
         return new ResponseReplayInfo(
                 sc2ApiResponse.getReplayInfo(),
-                sc2ApiResponse.getStatus(),
-                sc2ApiResponse.getId());
+                sc2ApiResponse.getStatus());
     }
 
     private static boolean hasReplayInfoResponse(Sc2Api.Response sc2ApiResponse) {

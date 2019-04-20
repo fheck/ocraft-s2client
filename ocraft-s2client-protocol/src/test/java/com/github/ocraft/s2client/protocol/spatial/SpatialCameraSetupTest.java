@@ -62,8 +62,6 @@ class SpatialCameraSetupTest {
                 .isEqualTo(Common.Size2DI.newBuilder().setX(MAP_X).setY(MAP_Y).build());
         assertThat(sc2ApiSpatialCameraSetup.getMinimapResolution()).as("resolution of minimap")
                 .isEqualTo(Common.Size2DI.newBuilder().setX(MINIMAP_X).setY(MINIMAP_Y).build());
-        assertThat(sc2ApiSpatialCameraSetup.getAllowCheatingLayers()).as("allow cheating layers").isTrue();
-        assertThat(sc2ApiSpatialCameraSetup.getCropToPlayableArea()).as("crop to playable area").isTrue();
     }
 
     @Test

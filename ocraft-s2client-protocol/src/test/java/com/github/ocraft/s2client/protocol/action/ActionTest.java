@@ -55,7 +55,6 @@ class ActionTest {
         assertThat(action.getRender()).as("action: render").isNotEmpty();
         assertThat(action.getUi()).as("action: ui").isNotEmpty();
         assertThat(action.getChat()).as("action: chat").isNotEmpty();
-        assertThat(action.getGameLoop()).as("action: game loop").isNotEmpty();
     }
 
     @Test

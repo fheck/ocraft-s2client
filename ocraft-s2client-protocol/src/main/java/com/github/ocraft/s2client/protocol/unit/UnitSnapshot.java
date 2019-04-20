@@ -62,10 +62,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
     private final boolean blip;
     private final Boolean powered;
     private final Set<Buff> buffs;
-    private final Boolean active;
-    private final Integer attackUpgradeLevel;
-    private final Integer armorUpgradeLevel;
-    private final Integer shieldUpgradeLevel;
 
     // Not populated for snapshots
     private final Float health;
@@ -78,7 +74,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
     private final Integer vespeneContents;
     private final Boolean flying;
     private final Boolean burrowed;
-    private final Boolean hallucination;
 
     // Not populated for enemies
     private final List<UnitOrder> orders;
@@ -90,8 +85,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
     private final Integer idealHarvesters;
     private final Float weaponCooldown;
     private final Tag engagedTargetTag;
-    private final Integer buffDurationRemain;
-    private final Integer buffDurationMax;
 
     UnitSnapshot(Raw.Unit sc2ApiUnit) {
         displayType = tryGet(Raw.Unit::getDisplayType, Raw.Unit::hasDisplayType)
@@ -121,17 +114,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         buffs = sc2ApiUnit.getBuffIdsList().stream().map(Buffs::from)
                 .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
 
-        active = tryGet(Raw.Unit::getIsActive, Raw.Unit::hasIsActive).apply(sc2ApiUnit).orElse(nothing());
-
-        attackUpgradeLevel = tryGet(Raw.Unit::getAttackUpgradeLevel, Raw.Unit::hasAttackUpgradeLevel)
-                .apply(sc2ApiUnit).orElse(nothing());
-
-        armorUpgradeLevel = tryGet(Raw.Unit::getArmorUpgradeLevel, Raw.Unit::hasArmorUpgradeLevel)
-                .apply(sc2ApiUnit).orElse(nothing());
-
-        shieldUpgradeLevel = tryGet(Raw.Unit::getShieldUpgradeLevel, Raw.Unit::hasShieldUpgradeLevel)
-                .apply(sc2ApiUnit).orElse(nothing());
-
         health = tryGet(Raw.Unit::getHealth, Raw.Unit::hasHealth).apply(sc2ApiUnit).orElse(nothing());
 
         healthMax = tryGet(Raw.Unit::getHealthMax, Raw.Unit::hasHealthMax).apply(sc2ApiUnit).orElse(nothing());
@@ -153,9 +135,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         flying = tryGet(Raw.Unit::getIsFlying, Raw.Unit::hasIsFlying).apply(sc2ApiUnit).orElse(nothing());
 
         burrowed = tryGet(Raw.Unit::getIsBurrowed, Raw.Unit::hasIsBurrowed).apply(sc2ApiUnit).orElse(nothing());
-
-        hallucination = tryGet(Raw.Unit::getIsHallucination, Raw.Unit::hasIsHallucination).apply(sc2ApiUnit)
-                .orElse(nothing());
 
         orders = sc2ApiUnit.getOrdersList().stream().map(UnitOrder::from)
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
@@ -183,12 +162,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
 
         engagedTargetTag = tryGet(Raw.Unit::getEngagedTargetTag, Raw.Unit::hasEngagedTargetTag)
                 .apply(sc2ApiUnit).map(Tag::from).orElse(nothing());
-
-        buffDurationRemain = tryGet(Raw.Unit::getBuffDurationRemain, Raw.Unit::hasBuffDurationRemain)
-                .apply(sc2ApiUnit).orElse(nothing());
-
-        buffDurationMax = tryGet(Raw.Unit::getBuffDurationMax, Raw.Unit::hasBuffDurationMax)
-                .apply(sc2ApiUnit).orElse(nothing());
     }
 
     UnitSnapshot(UnitSnapshot original, UnaryOperator<Ability> generalize) {
@@ -203,10 +176,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         this.onScreen = original.onScreen;
         this.blip = original.blip;
         this.powered = original.powered;
-        this.active = original.active;
-        this.attackUpgradeLevel = original.attackUpgradeLevel;
-        this.armorUpgradeLevel = original.armorUpgradeLevel;
-        this.shieldUpgradeLevel = original.shieldUpgradeLevel;
         this.health = original.health;
         this.healthMax = original.healthMax;
         this.shield = original.shield;
@@ -217,7 +186,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         this.vespeneContents = original.vespeneContents;
         this.flying = original.flying;
         this.burrowed = original.burrowed;
-        this.hallucination = original.hallucination;
         this.orders = original.orders.stream()
                 .map(order -> order.generalizeAbility(generalize))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
@@ -229,8 +197,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         this.idealHarvesters = original.idealHarvesters;
         this.weaponCooldown = original.weaponCooldown;
         this.engagedTargetTag = original.engagedTargetTag;
-        this.buffDurationRemain = original.buffDurationRemain;
-        this.buffDurationMax = original.buffDurationMax;
     }
 
     public static UnitSnapshot from(Raw.Unit sc2ApiUnit) {
@@ -364,46 +330,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         return Optional.ofNullable(engagedTargetTag);
     }
 
-    /**
-     * Building is training/researching (ie animated).
-     */
-    public Optional<Boolean> getActive() {
-        return Optional.ofNullable(active);
-    }
-
-    public Optional<Integer> getAttackUpgradeLevel() {
-        return Optional.ofNullable(attackUpgradeLevel);
-    }
-
-    public Optional<Integer> getArmorUpgradeLevel() {
-        return Optional.ofNullable(armorUpgradeLevel);
-    }
-
-    public Optional<Integer> getShieldUpgradeLevel() {
-        return Optional.ofNullable(shieldUpgradeLevel);
-    }
-
-    /**
-     * Unit is your own or detected as a hallucination.
-     */
-    public Optional<Boolean> getHallucination() {
-        return Optional.ofNullable(hallucination);
-    }
-
-    /**
-     * How long a buff or unit is still around (eg mule, broodling, chronoboost).
-     */
-    public Optional<Integer> getBuffDurationRemain() {
-        return Optional.ofNullable(buffDurationRemain);
-    }
-
-    /**
-     * How long the buff or unit is still around (eg mule, broodling, chronoboost).
-     */
-    public Optional<Integer> getBuffDurationMax() {
-        return Optional.ofNullable(buffDurationMax);
-    }
-
     @Override
     public UnitSnapshot generalizeAbility(UnaryOperator<Ability> generalize) {
         return new UnitSnapshot(this, generalize);
@@ -431,13 +357,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         if (!Objects.equals(selected, that.selected)) return false;
         if (!Objects.equals(powered, that.powered)) return false;
         if (!buffs.equals(that.buffs)) return false;
-        if (!Objects.equals(active, that.active)) return false;
-        if (!Objects.equals(attackUpgradeLevel, that.attackUpgradeLevel))
-            return false;
-        if (!Objects.equals(armorUpgradeLevel, that.armorUpgradeLevel))
-            return false;
-        if (!Objects.equals(shieldUpgradeLevel, that.shieldUpgradeLevel))
-            return false;
         if (!Objects.equals(health, that.health)) return false;
         if (!Objects.equals(healthMax, that.healthMax)) return false;
         if (!Objects.equals(shield, that.shield)) return false;
@@ -450,8 +369,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
             return false;
         if (!Objects.equals(flying, that.flying)) return false;
         if (!Objects.equals(burrowed, that.burrowed)) return false;
-        if (!Objects.equals(hallucination, that.hallucination))
-            return false;
         if (!orders.equals(that.orders)) return false;
         if (!Objects.equals(addOnTag, that.addOnTag)) return false;
         if (!passengers.equals(that.passengers)) return false;
@@ -465,11 +382,7 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
             return false;
         if (!Objects.equals(weaponCooldown, that.weaponCooldown))
             return false;
-        if (!Objects.equals(engagedTargetTag, that.engagedTargetTag))
-            return false;
-        if (!Objects.equals(buffDurationRemain, that.buffDurationRemain))
-            return false;
-        return Objects.equals(buffDurationMax, that.buffDurationMax);
+        return Objects.equals(engagedTargetTag, that.engagedTargetTag);
     }
 
     @Override
@@ -485,10 +398,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         result = 31 * result + (blip ? 1 : 0);
         result = 31 * result + (powered != null ? powered.hashCode() : 0);
         result = 31 * result + buffs.hashCode();
-        result = 31 * result + (active != null ? active.hashCode() : 0);
-        result = 31 * result + (attackUpgradeLevel != null ? attackUpgradeLevel.hashCode() : 0);
-        result = 31 * result + (armorUpgradeLevel != null ? armorUpgradeLevel.hashCode() : 0);
-        result = 31 * result + (shieldUpgradeLevel != null ? shieldUpgradeLevel.hashCode() : 0);
         result = 31 * result + (health != null ? health.hashCode() : 0);
         result = 31 * result + (healthMax != null ? healthMax.hashCode() : 0);
         result = 31 * result + (shield != null ? shield.hashCode() : 0);
@@ -499,7 +408,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         result = 31 * result + (vespeneContents != null ? vespeneContents.hashCode() : 0);
         result = 31 * result + (flying != null ? flying.hashCode() : 0);
         result = 31 * result + (burrowed != null ? burrowed.hashCode() : 0);
-        result = 31 * result + (hallucination != null ? hallucination.hashCode() : 0);
         result = 31 * result + orders.hashCode();
         result = 31 * result + (addOnTag != null ? addOnTag.hashCode() : 0);
         result = 31 * result + passengers.hashCode();
@@ -509,8 +417,6 @@ public class UnitSnapshot implements Serializable, GeneralizableAbility<UnitSnap
         result = 31 * result + (idealHarvesters != null ? idealHarvesters.hashCode() : 0);
         result = 31 * result + (weaponCooldown != null ? weaponCooldown.hashCode() : 0);
         result = 31 * result + (engagedTargetTag != null ? engagedTargetTag.hashCode() : 0);
-        result = 31 * result + (buffDurationRemain != null ? buffDurationRemain.hashCode() : 0);
-        result = 31 * result + (buffDurationMax != null ? buffDurationMax.hashCode() : 0);
         return result;
     }
 

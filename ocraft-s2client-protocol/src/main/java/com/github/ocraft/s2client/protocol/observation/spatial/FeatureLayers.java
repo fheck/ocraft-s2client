@@ -66,17 +66,6 @@ public final class FeatureLayers implements Serializable {
     // since 3.17
     private final ImageData effects;                // uint8. Visuals of persistent abilities. (eg. Psi storm)
 
-    // since 4.84
-    private final ImageData hallucinations;         // 1-bit. Whether the unit here is a hallucination.
-    private final ImageData cloaked;                // 1-bit. Whether the unit here is cloaked. Hidden units will show up too, but with less details in other layers.
-    private final ImageData blip;                   // 1-bit. Whether the unit here is a blip.
-    private final ImageData buffs;                  // int32. One of the buffs applied to this unit. Extras are ignored.
-    private final ImageData buffDuration;           // uint8. Ratio of buff remaining. [0%, 100%] encoded into [0, 255].
-    private final ImageData active;                 // 1-bit. Whether the unit here is active.
-    private final ImageData buildProgress;          // uint8. How far along the building is building something. [0%, 100%] encoded into [0, 255].
-    private final ImageData buildable;              // 1-bit. Whether a building can be built here.
-    private final ImageData pathable;               // 1-bit. Whether a unit can walk here.
-
     private FeatureLayers(Spatial.FeatureLayers sc2ApiFeatureLayers) {
         heightMap = tryGet(Spatial.FeatureLayers::getHeightMap, Spatial.FeatureLayers::hasHeightMap)
                 .apply(sc2ApiFeatureLayers).map(ImageData::from).orElseThrow(required("height map"));
@@ -129,33 +118,6 @@ public final class FeatureLayers implements Serializable {
                 .apply(sc2ApiFeatureLayers).map(ImageData::from).orElseThrow(required("unit density"));
 
         effects = tryGet(Spatial.FeatureLayers::getEffects, Spatial.FeatureLayers::hasEffects)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        hallucinations = tryGet(Spatial.FeatureLayers::getHallucinations, Spatial.FeatureLayers::hasHallucinations)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        cloaked = tryGet(Spatial.FeatureLayers::getCloaked, Spatial.FeatureLayers::hasCloaked)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        blip = tryGet(Spatial.FeatureLayers::getBlip, Spatial.FeatureLayers::hasBlip)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        buffs = tryGet(Spatial.FeatureLayers::getBuffs, Spatial.FeatureLayers::hasBuffs)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        buffDuration = tryGet(Spatial.FeatureLayers::getBuffDuration, Spatial.FeatureLayers::hasBuffDuration)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        active = tryGet(Spatial.FeatureLayers::getActive, Spatial.FeatureLayers::hasActive)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        buildProgress = tryGet(Spatial.FeatureLayers::getBuildProgress, Spatial.FeatureLayers::hasBuildProgress)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        buildable = tryGet(Spatial.FeatureLayers::getBuildable, Spatial.FeatureLayers::hasBuildable)
-                .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
-
-        pathable = tryGet(Spatial.FeatureLayers::getPathable, Spatial.FeatureLayers::hasPathable)
                 .apply(sc2ApiFeatureLayers).map(ImageData::from).orElse(nothing());
     }
 
@@ -283,69 +245,6 @@ public final class FeatureLayers implements Serializable {
         return Optional.ofNullable(effects);
     }
 
-    /**
-     * 1-bit. Whether the unit here is a hallucination.
-     */
-    public Optional<ImageData> getHallucinations() {
-        return Optional.ofNullable(hallucinations);
-    }
-
-    /**
-     * 1-bit. Whether the unit here is cloaked. Hidden units will show up too, but with less details in other layers.
-     */
-    public Optional<ImageData> getCloaked() {
-        return Optional.ofNullable(cloaked);
-    }
-
-    /**
-     * 1-bit. Whether the unit here is a blip.
-     */
-    public Optional<ImageData> getBlip() {
-        return Optional.ofNullable(blip);
-    }
-
-    /**
-     * int32. One of the buffs applied to this unit. Extras are ignored.
-     */
-    public Optional<ImageData> getBuffs() {
-        return Optional.ofNullable(buffs);
-    }
-
-    /**
-     * uint8. Ratio of buff remaining. [0%, 100%] encoded into [0, 255].
-     */
-    public Optional<ImageData> getBuffDuration() {
-        return Optional.ofNullable(buffDuration);
-    }
-
-    /**
-     * 1-bit. Whether the unit here is active.
-     */
-    public Optional<ImageData> getActive() {
-        return Optional.ofNullable(active);
-    }
-
-    /**
-     * uint8. How far along the building is building something. [0%, 100%] encoded into [0, 255].
-     */
-    public Optional<ImageData> getBuildProgress() {
-        return Optional.ofNullable(buildProgress);
-    }
-
-    /**
-     * 1-bit. Whether a building can be built here.
-     */
-    public Optional<ImageData> getBuildable() {
-        return Optional.ofNullable(buildable);
-    }
-
-    /**
-     * 1-bit. Whether a unit can walk here.
-     */
-    public Optional<ImageData> getPathable() {
-        return Optional.ofNullable(pathable);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -373,18 +272,7 @@ public final class FeatureLayers implements Serializable {
         if (!Objects.equals(unitDensityAa, that.unitDensityAa))
             return false;
         if (!Objects.equals(unitDensity, that.unitDensity)) return false;
-        if (!Objects.equals(effects, that.effects)) return false;
-        if (!Objects.equals(hallucinations, that.hallucinations))
-            return false;
-        if (!Objects.equals(cloaked, that.cloaked)) return false;
-        if (!Objects.equals(blip, that.blip)) return false;
-        if (!Objects.equals(buffs, that.buffs)) return false;
-        if (!Objects.equals(buffDuration, that.buffDuration)) return false;
-        if (!Objects.equals(active, that.active)) return false;
-        if (!Objects.equals(buildProgress, that.buildProgress))
-            return false;
-        if (!Objects.equals(buildable, that.buildable)) return false;
-        return Objects.equals(pathable, that.pathable);
+        return Objects.equals(effects, that.effects);
     }
 
     @Override
@@ -406,15 +294,6 @@ public final class FeatureLayers implements Serializable {
         result = 31 * result + (unitDensityAa != null ? unitDensityAa.hashCode() : 0);
         result = 31 * result + (unitDensity != null ? unitDensity.hashCode() : 0);
         result = 31 * result + (effects != null ? effects.hashCode() : 0);
-        result = 31 * result + (hallucinations != null ? hallucinations.hashCode() : 0);
-        result = 31 * result + (cloaked != null ? cloaked.hashCode() : 0);
-        result = 31 * result + (blip != null ? blip.hashCode() : 0);
-        result = 31 * result + (buffs != null ? buffs.hashCode() : 0);
-        result = 31 * result + (buffDuration != null ? buffDuration.hashCode() : 0);
-        result = 31 * result + (active != null ? active.hashCode() : 0);
-        result = 31 * result + (buildProgress != null ? buildProgress.hashCode() : 0);
-        result = 31 * result + (buildable != null ? buildable.hashCode() : 0);
-        result = 31 * result + (pathable != null ? pathable.hashCode() : 0);
         return result;
     }
 

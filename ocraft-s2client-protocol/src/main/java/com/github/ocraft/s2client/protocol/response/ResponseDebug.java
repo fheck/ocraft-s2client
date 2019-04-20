@@ -36,15 +36,15 @@ public final class ResponseDebug extends Response {
 
     private static final long serialVersionUID = -6077963672255615287L;
 
-    private ResponseDebug(Sc2Api.Status sc2ApiStatus, int id) {
-        super(ResponseType.DEBUG, GameStatus.from(sc2ApiStatus), id);
+    private ResponseDebug(Sc2Api.Status sc2ApiStatus) {
+        super(ResponseType.DEBUG, GameStatus.from(sc2ApiStatus));
     }
 
     public static ResponseDebug from(Sc2Api.Response sc2ApiResponse) {
         if (!hasDebugResponse(sc2ApiResponse)) {
             throw new IllegalArgumentException("provided argument doesn't have debug response");
         }
-        return new ResponseDebug(sc2ApiResponse.getStatus(), sc2ApiResponse.getId());
+        return new ResponseDebug(sc2ApiResponse.getStatus());
     }
 
     private static boolean hasDebugResponse(Sc2Api.Response sc2ApiResponse) {
