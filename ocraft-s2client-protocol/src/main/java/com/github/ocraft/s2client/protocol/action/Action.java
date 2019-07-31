@@ -420,7 +420,7 @@ public final class Action implements Sc2ApiSerializable<Sc2Api.Action> {
             return false;
         if (!Objects.equals(render, action.render)) return false;
         if (!Objects.equals(ui, action.ui)) return false;
-        return !Objects.equals(chat, action.chat);
+        return Objects.equals(chat, action.chat);
     }
 
     @Override
